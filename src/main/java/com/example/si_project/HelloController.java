@@ -16,7 +16,6 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 import java.io.*;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
@@ -140,11 +139,20 @@ public class HelloController {
     }
 
     @FXML
-    private void handleAboutUs(ActionEvent event) {
+    private void handleAboutKarol(ActionEvent event) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("O Autorach");
+        alert.setTitle("Informacje o autorze");
         alert.setHeaderText(null);
-        alert.setContentText("Autor: Karol Michalak");
+        alert.setContentText("Karol Michalak\nInformatyka I - 2 rok\nEmail: kadeem393@gmail.com\nNr indeksu: 160095");
+        alert.showAndWait();
+    }
+
+    @FXML
+    private void handleAboutPrzemek(ActionEvent event) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Informacje o autorze");
+        alert.setHeaderText(null);
+        alert.setContentText("Przemek Naja");
         alert.showAndWait();
     }
 }

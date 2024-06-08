@@ -40,8 +40,8 @@
           </Menu>
           <Menu mnemonicParsing="false" text="O Autorach">
             <items>
-              <MenuItem mnemonicParsing="false" onAction="#handleAboutUs" text="Informacje" />
-                  <MenuItem mnemonicParsing="false" text="Kontakt" />
+              <MenuItem mnemonicParsing="false" onAction="#handleAboutKarol" text="Karol" />
+                  <MenuItem mnemonicParsing="false" onAction="#handleAboutPrzemek" text="Przemek" />
             </items>
           </Menu>
         </menus>

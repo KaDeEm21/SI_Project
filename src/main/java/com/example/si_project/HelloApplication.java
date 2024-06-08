@@ -18,6 +18,7 @@ public class HelloApplication extends Application {
 
         stage.setTitle("System ekspertowy. Wnioskowanie progresywne i regresywne :)");
         stage.setScene(scene);
+        stage.setResizable(false);
         stage.show();
     }
 
