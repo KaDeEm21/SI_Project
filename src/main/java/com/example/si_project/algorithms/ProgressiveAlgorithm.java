@@ -10,9 +10,8 @@ import java.util.*;
 
 public class ProgressiveAlgorithm implements IProgressive {
 
-//    private List<String> factSet = new ArrayList<>();   //zbiór faktów
     private Set<String> factSet = new HashSet<>();   //zbiór faktów
-    private Rules rules = new Rules();  //zbiór reguł
+    private Set<Rule> rules = new HashSet<>();  //zbiór reguł
 
 
     @Override
@@ -21,7 +20,7 @@ public class ProgressiveAlgorithm implements IProgressive {
             String line;
 
             while ((line = reader.readLine()) != null) {
-                rules.addRule(line);
+                rules.add(new Rule(line));
             }
             return true;
         } catch (IOException e) {
@@ -60,7 +59,7 @@ public class ProgressiveAlgorithm implements IProgressive {
 
     @Override
     public void eraseKnowledgeBase() {
-        rules.getRules().clear();
+        rules.clear();
     }
 
     @Override
@@ -70,39 +69,38 @@ public class ProgressiveAlgorithm implements IProgressive {
 
     @Override
     public List<String> execute() {
-        Map<String, Set<String>> s = new HashMap<>();
-        Map<String, Set<String>> a = new HashMap<>();
+        Set<Rule> s = new HashSet<>();
+        Set<Rule> a = new HashSet<>();
 
         //inicjalizacja zbioru S
-        rules.getRules().forEach((head, tail) -> {
-            if (tail.stream().allMatch(x -> factSet.contains(x))) {
-                s.put(head, tail);
+        rules.forEach(rule->{
+            if(rule.getTail().stream().allMatch(x->factSet.contains(x))){
+                s.add(rule);
             }
         });
 
 
         while (!s.isEmpty()) {
             //aktywowanie reguły
-            Map.Entry<String, Set<String>> activeRule = s.entrySet().iterator().next();
+            Rule activeRule = s.stream().iterator().next();
             //usunięcie aktywnej reguły z zbioru S
-            s.remove(activeRule.getKey());
+            s.remove(activeRule);
             //dodanie konkluzji (key) do zbioru faktów
-            factSet.add(activeRule.getKey());
+            factSet.add(activeRule.getHead());
             //dodanie aktywnej reguły do zbioru A (reguły aktywowane)
-            a.put(activeRule.getKey(), activeRule.getValue());
+            a.add(activeRule);
 
             //aktualizacja zbioru S o nowe pasujące reguły
-            rules.getRules().forEach((head, tail) -> {
+            rules.forEach(rule ->{
                 //sprawdzenie czy reguła pasuje do zbioru faktów
-                if (tail.stream().allMatch(x -> factSet.contains(x)
+                if (rule.getTail().stream().allMatch(x -> factSet.contains(x))
                         //sprawdzenie czy reguła została już użyta (zawiera się w A)
-                        && !a.containsKey(head))
-                        && !factSet.contains(head)) {
-                    s.put(head, tail);
+                        &&!a.contains(rule)
+                        &&!factSet.contains(rule.getHead())) {
+                    s.add(rule);
                 }
-
-
             });
+
 
         }
 

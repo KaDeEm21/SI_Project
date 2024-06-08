@@ -11,8 +11,7 @@ import java.util.stream.Collectors;
 
 public class RegressiveAlgorithm implements IRegressive {
     private Set<String> factSet = new HashSet<>(); //zbiór faktów
-    Rules rules = new Rules();
-
+    private Set<Rule> rules = new HashSet<>();
 
     @Override
     public boolean loadKnowledgeBaseSet(String filename) {
@@ -20,13 +19,12 @@ public class RegressiveAlgorithm implements IRegressive {
             String line;
 
             while ((line = reader.readLine()) != null) {
-                rules.addRule(line);
+                rules.add(new Rule(line));
             }
             return true;
         } catch (IOException e) {
             // Obsługa błędu w przypadku problemów z plikiem
             showErrorAlert("Nie można wczytać pliku " + filename);
-            e.printStackTrace();
             return false;
         }
     }
@@ -41,7 +39,6 @@ public class RegressiveAlgorithm implements IRegressive {
 
     @Override
     public boolean loadFactSet(String filename) {
-
         try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
             String line = reader.readLine();
             factSet.addAll(Arrays.asList(line.split(",")));
@@ -49,7 +46,6 @@ public class RegressiveAlgorithm implements IRegressive {
         } catch (IOException e) {
             // Obsługa błędu w przypadku problemów z plikiem
             showErrorAlert("Nie można wczytać pliku " + filename);
-            e.printStackTrace();
             return false;
         }
     }
@@ -61,19 +57,20 @@ public class RegressiveAlgorithm implements IRegressive {
 
     @Override
     public void eraseKnowledgeBase() {
-        rules.getRules().clear();
+        rules.clear();
     }
 
     @Override
     public List<String> returnCurrentFactSet() {
-        return List.copyOf(factSet);
+        return new ArrayList<>(factSet);
     }
 
     @Override
     public boolean execute(String goal) {
         // Inicjalizacja zbioru s
-        Set<String> s = rules.getRules().keySet().stream()
-                .filter(strings -> strings.equals(goal))
+        Set<Rule> s = rules
+                .stream()
+                .filter(rule -> rule.getHead().equals(goal))
                 .collect(Collectors.toSet());
 
         // jeśli cel znajduje się już w zbiorze faktów zwracamy prawdę
@@ -84,13 +81,16 @@ public class RegressiveAlgorithm implements IRegressive {
         // główna pętla
         while (!premiseIsTrue && !s.isEmpty()) {
             // wybieramy regułę ze zbioru s
-            String activeRule = s.iterator().next();
-            if(rules.getRules().get(activeRule).isEmpty()) {
+            Object activeRule = s.iterator().next();
+            Set<String> tail = rules.stream().filter(rule -> rule.equals(activeRule)).findFirst().get().getTail();
+
+            if (tail.isEmpty()) {
                 premiseIsTrue = true;
                 break;
             }
-            // premises - przesłanki aktywnej reguły
-            Set<String> premises = rules.getRules().get(activeRule);
+
+            // przesłanki - tail aktywnej reguły
+            Set<String> premises = tail;
 
             // w pętli for sprawdzamy każdą z przesłanek czy zawiera się w zbiorze faktów
             for (String w : premises) {
@@ -107,7 +107,6 @@ public class RegressiveAlgorithm implements IRegressive {
             }
         }
 
-
         // Jeśli wszystkie przesłanki się zgadzają dodajemy cel do zbioru faktów
         if (premiseIsTrue) {
             factSet.add(goal);
@@ -116,11 +115,11 @@ public class RegressiveAlgorithm implements IRegressive {
         return premiseIsTrue;
     }
 
-
-
     @Override
     public List<String> returnHeadsOfRulesSet() {
-
-        return new ArrayList<>(rules.getRules().keySet());
+        return rules
+                .stream()
+                .map(x->String.valueOf(x.getHead()))
+                .collect(Collectors.toList());
     }
 }

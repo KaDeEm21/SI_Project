@@ -125,8 +125,9 @@ public class HelloController {
                 throw new RuntimeException(e);
             }
 
-            ObservableList<String> items = FXCollections.observableArrayList(r.getRules().keySet());
-            choiceBox.setItems(items);
+//TODO: check
+//            ObservableList<String> items = FXCollections.observableArrayList(r.getRules().);
+//            choiceBox.setItems(items);
 
         } else {
             System.out.println("Nie wybrano pliku.");
