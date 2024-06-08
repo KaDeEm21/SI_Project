@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+
+<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.si_project.HelloController">
+  <columnConstraints>
+    <ColumnConstraints hgrow="SOMETIMES" maxWidth="295.199951171875" minWidth="115.0" prefWidth="115.0" />
+    <ColumnConstraints hgrow="SOMETIMES" maxWidth="670.0" minWidth="670.0" prefWidth="670.0" />
+  </columnConstraints>
+  <rowConstraints>
+      <RowConstraints maxHeight="31.4" minHeight="0.0" prefHeight="0.0" />
+    <RowConstraints maxHeight="100.0" minHeight="41.199981689453125" prefHeight="41.199981689453125" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="246.8" minHeight="30.0" prefHeight="35.0" vgrow="SOMETIMES" />
+    <RowConstraints maxHeight="246.8" minHeight="30.0" prefHeight="35.0" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="246.8" minHeight="33.40000000000002" prefHeight="33.40000000000002" vgrow="SOMETIMES" />
+      <RowConstraints fillHeight="false" maxHeight="92.0" minHeight="36.0" prefHeight="38.4000244140625" vgrow="NEVER" />
+      <RowConstraints maxHeight="96.0" minHeight="30.800012207031244" prefHeight="30.800012207031244" vgrow="SOMETIMES" />
+    <RowConstraints maxHeight="379.9999877929688" minHeight="30.0" prefHeight="379.9999877929688" vgrow="SOMETIMES" />
+  </rowConstraints>
+   <children>
+      <MenuBar prefHeight="26.0" prefWidth="599.0" GridPane.columnSpan="2" GridPane.rowIndex="1" GridPane.valignment="TOP">
+        <menus>
+          <Menu mnemonicParsing="false" text="Plik">
+            <items>
+              <MenuItem mnemonicParsing="false" onAction="#handleLoadRules" text="Wczytaj reguły" />
+              <MenuItem mnemonicParsing="false" onAction="#handleLoadFacts" text="Wczytaj fakty" />
+              <MenuItem mnemonicParsing="false" onAction="#handleClose" text="Zamknij" />
+            </items>
+          </Menu>
+          <Menu mnemonicParsing="false" text="O Autorach">
+            <items>
+              <MenuItem mnemonicParsing="false" onAction="#handleAboutUs" text="Informacje" />
+                  <MenuItem mnemonicParsing="false" text="Kontakt" />
+            </items>
+          </Menu>
+        </menus>
+      </MenuBar>
+      <Label text="Reguły:" GridPane.rowIndex="2">
+         <padding>
+            <Insets left="20.0" />
+         </padding>
+      </Label>
+      <Label text="Fakty:" GridPane.rowIndex="3">
+         <padding>
+            <Insets left="20.0" />
+         </padding>
+      </Label>
+      <Button focusTraversable="false" maxWidth="100.0" minWidth="80.0" mnemonicParsing="false" onAction="#handleOnGenerateRulesClick" text="Generuj fakty" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="CENTER">
+         <GridPane.margin>
+            <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
+         </GridPane.margin>
+      </Button>
+      <Button focusTraversable="false" maxWidth="100.0" minWidth="80.0" mnemonicParsing="false" onAction="#handleOnCheckGoal" text="Sprawdź cel" GridPane.halignment="CENTER" GridPane.rowIndex="5" GridPane.valignment="CENTER">
+         <GridPane.margin>
+            <Insets bottom="10.0" left="10.0" right="10.0" />
+         </GridPane.margin>
+      </Button>
+      <ChoiceBox fx:id="choiceBox" prefWidth="250.0" GridPane.columnIndex="1" GridPane.rowIndex="5" GridPane.valignment="TOP" />
+      <Label text="Wynik:" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+      <TextField fx:id="factsPathTextField" editable="false" focusTraversable="false" maxWidth="650.0" prefWidth="650.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+      <TextField fx:id="rulesPathTextField" editable="false" focusTraversable="false" maxWidth="650.0" prefHeight="26.0" prefWidth="650.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+      <TextArea fx:id="resultsTextArea" editable="false" focusTraversable="false" maxHeight="365.0" maxWidth="654.0" prefHeight="355.0" prefWidth="654.0" promptText="wyniki" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="7" GridPane.valignment="TOP" />
+   </children>
+</GridPane>
