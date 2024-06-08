@@ -2,6 +2,7 @@ package com.example.si_project;
 
 import com.example.si_project.algorithms.ProgressiveAlgorithm;
 import com.example.si_project.algorithms.RegressiveAlgorithm;
+import com.example.si_project.algorithms.Rule;
 import com.example.si_project.algorithms.Rules;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
@@ -16,8 +17,11 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 import java.io.*;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Scanner;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 public class HelloController {
     @FXML
@@ -58,10 +62,10 @@ public class HelloController {
         re.loadFactSet(factsPathTextField.getText());
         resultsTextArea.clear();
         boolean result = re.execute(choiceBox.getValue().toString());
-        if(result) {
-            resultsTextArea.appendText("\""+choiceBox.getValue().toString() + "\" jest spełnione :D");
-        }else{
-            resultsTextArea.appendText("\""+choiceBox.getValue().toString() + "\" nie jest spełnione :(");
+        if (result) {
+            resultsTextArea.appendText("\"" + choiceBox.getValue().toString() + "\" jest spełnione :D");
+        } else {
+            resultsTextArea.appendText("\"" + choiceBox.getValue().toString() + "\" nie jest spełnione :(");
         }
 
     }
@@ -115,19 +119,18 @@ public class HelloController {
             System.out.println("Wybrano plik: " + selectedFile.getAbsolutePath());
             System.out.println(rulesPathTextField.getText());
 
-            Rules r = new Rules();
+            Set<Rule> r = new HashSet<>();
             try {
                 Scanner scanner = new Scanner(selectedFile);
-                while (scanner.hasNext()){
-                    r.addRule(scanner.nextLine());
+                while (scanner.hasNext()) {
+                    r.add(new Rule(scanner.nextLine()));
                 }
             } catch (FileNotFoundException e) {
                 throw new RuntimeException(e);
             }
 
-//TODO: check
-//            ObservableList<String> items = FXCollections.observableArrayList(r.getRules().);
-//            choiceBox.setItems(items);
+            ObservableList<String> items = FXCollections.observableArrayList(r.stream().map(Rule::getHead).collect(Collectors.toSet()));
+            choiceBox.setItems(items);
 
         } else {
             System.out.println("Nie wybrano pliku.");
