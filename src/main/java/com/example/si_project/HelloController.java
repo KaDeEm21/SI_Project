@@ -71,13 +71,12 @@ public class HelloController {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Wczytaj fakty");
 
-        // Ustawienie filtrów plików
         fileChooser.getExtensionFilters().addAll(
                 new FileChooser.ExtensionFilter("Pliki tekstowe", "*.txt"),
+                new FileChooser.ExtensionFilter("Pliki CSV", "*.csv"),
                 new FileChooser.ExtensionFilter("Wszystkie pliki", "*.*")
         );
 
-        // Wyświetlenie okna dialogowego wyboru pliku
         File selectedFile = fileChooser.showOpenDialog(stage);
 
         if (selectedFile != null) {
@@ -88,26 +87,17 @@ public class HelloController {
         }
     }
 
-    private void showErrorAlert(String title, String content) {
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle(title);
-        alert.setHeaderText(null);
-        alert.setContentText(content);
-        alert.showAndWait();
-    }
-
     @FXML
     private void handleLoadRules(ActionEvent event) {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Wczytaj reguły");
 
-        // Ustawienie filtrów plików
         fileChooser.getExtensionFilters().addAll(
                 new FileChooser.ExtensionFilter("Pliki tekstowe", "*.txt"),
                 new FileChooser.ExtensionFilter("Wszystkie pliki", "*.*")
         );
 
-        // Wyświetlenie okna dialogowego wyboru pliku
+
         File selectedFile = fileChooser.showOpenDialog(stage);
 
         if (selectedFile != null) {
@@ -134,6 +124,47 @@ public class HelloController {
     }
 
     @FXML
+    private void handleLoadCSV(ActionEvent event) {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Wczytaj plik CSV");
+
+
+        fileChooser.getExtensionFilters().addAll(
+                new FileChooser.ExtensionFilter("Pliki CSV", "*.csv"),
+                new FileChooser.ExtensionFilter("Wszystkie pliki", "*.*")
+        );
+
+
+        File selectedFile = fileChooser.showOpenDialog(stage);
+
+        if (selectedFile != null) {
+
+            try (BufferedReader reader = new BufferedReader(new FileReader(selectedFile))) {
+                StringBuilder content = new StringBuilder();
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    content.append(line).append("\n");
+                }
+                resultsTextArea.setText(content.toString());
+
+
+            } catch (IOException e) {
+                showErrorAlert("Błąd podczas wczytywania pliku", e.getMessage());
+            }
+        } else {
+            System.out.println("Nie wybrano pliku.");
+        }
+    }
+
+    private void showErrorAlert(String title, String content) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(content);
+        alert.showAndWait();
+    }
+
+    @FXML
     private void handleClose(ActionEvent event) {
         Platform.exit();
     }
@@ -152,7 +183,7 @@ public class HelloController {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Informacje o autorze");
         alert.setHeaderText(null);
-        alert.setContentText("Przemek Naja");
+        alert.setContentText("Przemyslaw Naja\nInformatyka I - 2 rok\nEmail: przemyslawnaja@gmail.com\nNr indeksu: 160099");
         alert.showAndWait();
     }
 }
