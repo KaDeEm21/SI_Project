@@ -138,6 +138,61 @@ public class HelloController {
     }
 
     @FXML
+    private void handleLoadCSV(ActionEvent event) {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Wczytaj plik CSV");
+
+
+        fileChooser.getExtensionFilters().addAll(
+                new FileChooser.ExtensionFilter("Pliki CSV", "*.csv"),
+                new FileChooser.ExtensionFilter("Wszystkie pliki", "*.*")
+        );
+
+
+        File selectedFile = fileChooser.showOpenDialog(stage);
+
+        if (selectedFile != null) {
+
+            try (BufferedReader reader = new BufferedReader(new FileReader(selectedFile));
+                 FileWriter rulesWriter = new FileWriter("rulesFromCsv.txt");
+                 FileWriter factsWriter = new FileWriter("factsFromCsv.txt");) {
+
+                List<String> linesCsv = reader.lines().toList();
+                //csv file structure
+                //0;1;2;3;4;5;6;7;8;9;10;11;12;13;14;15;16;17;18;19;20;21;22
+                //3-21 tail
+                //1 - head
+
+                linesCsv.forEach(line -> {
+                    String[] parts = line.split(";");
+                    String head = parts[1];
+                    Set<String> tail = new HashSet<>();
+                    for (int i = 3; i < 22; i++) {
+                        tail.add(parts[i]);
+                    }
+                    try {
+                        if(head!=null){
+                        rulesWriter.write(head + "<-" + tail+"\n");
+                        }else{
+                            factsWriter.write(tail+",");
+                        }
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+
+                });
+
+
+            } catch (IOException e) {
+                showErrorAlert("Błąd podczas wczytywania pliku", e.getMessage());
+            }
+        } else {
+            System.out.println("Nie wybrano pliku.");
+        }
+    }
+
+
+    @FXML
     private void handleClose(ActionEvent event) {
         Platform.exit();
     }
