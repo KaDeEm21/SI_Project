@@ -3,7 +3,6 @@ package com.example.si_project;
 import com.example.si_project.algorithms.ProgressiveAlgorithm;
 import com.example.si_project.algorithms.RegressiveAlgorithm;
 import com.example.si_project.algorithms.Rule;
-import com.example.si_project.algorithms.Rules;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -17,10 +16,7 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 import java.io.*;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Scanner;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class HelloController {
@@ -154,37 +150,48 @@ public class HelloController {
         if (selectedFile != null) {
 
             try (BufferedReader reader = new BufferedReader(new FileReader(selectedFile));
-                 FileWriter rulesWriter = new FileWriter("rulesFromCsv.txt");
-                 FileWriter factsWriter = new FileWriter("factsFromCsv.txt");) {
+                 FileWriter rulesWriter = new FileWriter("rulesFromCsv.txt")) {
 
-                List<String> linesCsv = reader.lines().toList();
+                List<String> linesCsv = reader.lines().skip(2).toList();
+
                 //csv file structure
                 //0;1;2;3;4;5;6;7;8;9;10;11;12;13;14;15;16;17;18;19;20;21;22
                 //3-21 tail
                 //1 - head
 
-                linesCsv.forEach(line -> {
-                    String[] parts = line.split(";");
-                    String head = parts[1];
-                    Set<String> tail = new HashSet<>();
+                linesCsv.stream().forEach(line -> {
+                    String head = line.split(";", -1)[1];
+                    List<String> tail = new ArrayList<>();
                     for (int i = 3; i < 22; i++) {
-                        tail.add(parts[i]);
+                        if (!line.split(";", -1)[i].isEmpty()) {
+                            tail.add(line.split(";", -1)[i]);
+                        }
                     }
                     try {
-                        if(head!=null){
-                        rulesWriter.write(head + "<-" + tail+"\n");
-                        }else{
-                            factsWriter.write(tail+",");
+                        if (head != null) {
+                            StringBuilder sb = new StringBuilder();
+                            sb.append(head);
+                            sb.append("<-");
+                            for (String condition : tail) {
+                                sb.append(condition);
+                                sb.append(",");
+                            }
+                            sb.deleteCharAt(sb.length() - 1);
+                            sb.append("\n");
+                            rulesWriter.write(sb.toString());
                         }
                     } catch (IOException e) {
                         throw new RuntimeException(e);
                     }
-
                 });
+                File rulesCsv = new File("rulesFromCsv.txt");
+                rulesPathTextField.setText(rulesCsv.getAbsolutePath());
+                System.out.println("Wczytano plik: " + rulesCsv.getAbsolutePath());
+                System.out.println(rulesPathTextField.getText());
 
 
             } catch (IOException e) {
-                showErrorAlert("Błąd podczas wczytywania pliku", e.getMessage());
+                System.out.println(e.getMessage());
             }
         } else {
             System.out.println("Nie wybrano pliku.");
