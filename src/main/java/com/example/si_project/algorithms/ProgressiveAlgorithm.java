@@ -11,6 +11,7 @@ import java.util.*;
 public class ProgressiveAlgorithm implements IProgressive {
 
     private Set<String> factSet = new HashSet<>();   //zbiór faktów
+
     private Set<Rule> rules = new HashSet<>();  //zbiór reguł
 
 
@@ -25,6 +26,7 @@ public class ProgressiveAlgorithm implements IProgressive {
             return true;
         } catch (IOException e) {
             // Obsługa błędu w przypadku problemów z plikiem
+            e.printStackTrace();
             showErrorAlert("Nie można wczytać pliku " + filename);
             return false;
         }
@@ -47,6 +49,7 @@ public class ProgressiveAlgorithm implements IProgressive {
             return true;
         } catch (IOException e) {
             // Obsługa błędu w przypadku problemów z plikiem
+            e.printStackTrace();
             showErrorAlert("Nie można wczytać pliku " + filename);
             return false;
         }

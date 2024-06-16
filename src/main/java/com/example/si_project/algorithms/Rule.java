@@ -1,11 +1,13 @@
 package com.example.si_project.algorithms;
 
+import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 public class Rule {
     private String head;
-    private Set<String> tail;
+    private Set<String> tail = new HashSet<>();
 
     public Rule(String head, Set<String> tail) {
         this.head = head;
@@ -16,7 +18,8 @@ public class Rule {
         if (line.contains("<-")){
         String[] parts = line.split("<-");
         this.head = parts[0].trim();
-        this.tail = Set.of(parts[1].trim().split(","));
+
+            this.tail.addAll(Arrays.asList(parts[1].trim().split(",")));
         }else {
             this.head = line;
             this.tail = new HashSet<>();

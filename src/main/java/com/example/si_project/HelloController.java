@@ -173,6 +173,9 @@ public class HelloController {
                             sb.append(head);
                             sb.append("<-");
                             for (String condition : tail) {
+                                if(condition.contains(",")){
+                                    condition.replace(",","");
+                                }
                                 sb.append(condition);
                                 sb.append(",");
                             }
@@ -184,11 +187,28 @@ public class HelloController {
                         throw new RuntimeException(e);
                     }
                 });
-                File rulesCsv = new File("rulesFromCsv.txt");
-                rulesPathTextField.setText(rulesCsv.getAbsolutePath());
-                System.out.println("Wczytano plik: " + rulesCsv.getAbsolutePath());
-                System.out.println(rulesPathTextField.getText());
 
+
+                rulesWriter.close();
+
+                // Ustawienie ścieżki do pliku w polu tekstowym
+                String rulesFilePath = new File("rulesFromCsv.txt").getAbsolutePath();
+                rulesPathTextField.setText(rulesFilePath);
+                System.out.println("Wczytano plik: " + selectedFile.getAbsolutePath());
+                System.out.println("Ścieżka do zapisanego pliku: " + rulesFilePath);
+
+
+                try (BufferedReader fileReader = new BufferedReader(new FileReader("rulesFromCsv.txt"))) {
+                    Set<Rule> r = fileReader.lines()
+                            .map(Rule::new) // Zakładając, że konstruktor Rule przyjmuje String jako parametr
+                            .collect(Collectors.toSet());
+
+                    ObservableList<String> items = FXCollections.observableArrayList(r.stream().map(Rule::getHead).collect(Collectors.toSet()));
+                    choiceBox.setItems(items);
+
+                } catch (IOException e) {
+                    System.out.println(e.getMessage());
+                }
 
             } catch (IOException e) {
                 System.out.println(e.getMessage());
