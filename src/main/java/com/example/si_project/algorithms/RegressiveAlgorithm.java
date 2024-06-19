@@ -41,7 +41,7 @@ public class RegressiveAlgorithm implements IRegressive {
     public boolean loadFactSet(String filename) {
         try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
             String line = reader.readLine();
-            factSet.addAll(Arrays.asList(line.split(",")));
+            factSet.addAll(Arrays.asList(line.toLowerCase().split(",")));
             return true;
         } catch (IOException e) {
             // Obsługa błędu w przypadku problemów z plikiem
@@ -94,7 +94,7 @@ public class RegressiveAlgorithm implements IRegressive {
 
             // w pętli for sprawdzamy każdą z przesłanek czy zawiera się w zbiorze faktów
             for (String w : premises) {
-                premiseIsTrue = factSet.contains(w);
+                premiseIsTrue = factSet.contains(w.toLowerCase());
                 if (!premiseIsTrue) {
                     premiseIsTrue = execute(w);
                     if (!premiseIsTrue) break;

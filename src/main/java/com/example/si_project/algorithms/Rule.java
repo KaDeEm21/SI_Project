@@ -14,7 +14,8 @@ public class Rule {
         this.tail = tail;
     }
 
-    public Rule(String line){
+    public Rule(String l){
+        String line = l.toLowerCase();
         if (line.contains("<-")){
         String[] parts = line.split("<-");
         this.head = parts[0].trim();

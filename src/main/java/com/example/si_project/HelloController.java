@@ -125,7 +125,8 @@ public class HelloController {
                 throw new RuntimeException(e);
             }
 
-            ObservableList<String> items = FXCollections.observableArrayList(r.stream().map(Rule::getHead).collect(Collectors.toSet()));
+
+            ObservableList<String> items = FXCollections.observableArrayList(r.stream().sorted(Comparator.comparing(Rule::toString)).map(Rule::getHead).collect(Collectors.toSet()));
             choiceBox.setItems(items);
 
         } else {
@@ -160,11 +161,12 @@ public class HelloController {
                 //1 - head
 
                 linesCsv.stream().forEach(line -> {
-                    String head = line.split(";", -1)[1];
+                    String lowerCaseLine = line.toLowerCase();
+                    String head = lowerCaseLine.split(";", -1)[1];
                     List<String> tail = new ArrayList<>();
                     for (int i = 3; i < 22; i++) {
-                        if (!line.split(";", -1)[i].isEmpty()) {
-                            tail.add(line.split(";", -1)[i]);
+                        if (!lowerCaseLine.split(";", -1)[i].isEmpty()) {
+                            tail.add(lowerCaseLine.split(";", -1)[i]);
                         }
                     }
                     try {
@@ -174,10 +176,13 @@ public class HelloController {
                             sb.append("<-");
                             for (String condition : tail) {
                                 if(condition.contains(",")){
-                                    condition.replace(",","");
-                                }
+                                    String withoutComma = condition.replace(",", "");
+                                    sb.append(withoutComma);
+                                    sb.append(",");
+                                }else{
                                 sb.append(condition);
                                 sb.append(",");
+                                }
                             }
                             sb.deleteCharAt(sb.length() - 1);
                             sb.append("\n");
@@ -239,6 +244,14 @@ public class HelloController {
         alert.setTitle("Informacje o autorze");
         alert.setHeaderText(null);
         alert.setContentText("Przemek Naja");
+        alert.showAndWait();
+    }
+    @FXML
+    private void handleAboutMikołaj(ActionEvent event) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Informacje o autorze");
+        alert.setHeaderText(null);
+        alert.setContentText("Mikołaj Materek\nInformatyka I - 2 rok\nEmail: mikmat.business@gmail.com\nNr indeksu: 160094");
         alert.showAndWait();
     }
 }

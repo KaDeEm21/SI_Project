@@ -42,6 +42,7 @@
                     <items>
                         <MenuItem mnemonicParsing="false" onAction="#handleAboutKarol" text="Karol" />
                         <MenuItem mnemonicParsing="false" onAction="#handleAboutPrzemek" text="Przemek" />
+                  <MenuItem mnemonicParsing="false" onAction="#handleAboutMikołaj" text="Mikołaj" />
                     </items>
                 </Menu>
             </menus>
