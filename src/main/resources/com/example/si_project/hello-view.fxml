@@ -13,7 +13,7 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.si_project.HelloController">
+<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" style="-fx-background-color: rgba(50,172,255,0.71);" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.si_project.HelloController">
     <columnConstraints>
         <ColumnConstraints hgrow="SOMETIMES" maxWidth="295.199951171875" minWidth="115.0" prefWidth="115.0" />
         <ColumnConstraints hgrow="SOMETIMES" maxWidth="670.0" minWidth="670.0" prefWidth="670.0" />
