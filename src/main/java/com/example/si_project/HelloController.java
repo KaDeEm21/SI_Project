@@ -209,6 +209,7 @@ public class HelloController {
                             .collect(Collectors.toSet());
 
                     ObservableList<String> items = FXCollections.observableArrayList(r.stream().map(Rule::getHead).collect(Collectors.toSet()));
+                    FXCollections.sort(items,Comparator.naturalOrder());
                     choiceBox.setItems(items);
 
                 } catch (IOException e) {
