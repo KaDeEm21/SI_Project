@@ -243,7 +243,7 @@ public class HelloController {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Informacje o autorze");
         alert.setHeaderText(null);
-        alert.setContentText("Przemek Naja");
+        alert.setContentText("Przemyslaw Naja\nInformatyka I - 2 rok\nEmail: przemyslawnaja@gmail.com\nNr indeksu: 160099");
         alert.showAndWait();
     }
     @FXML
